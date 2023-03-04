@@ -9,6 +9,22 @@ class Player:
         self.angle = PLAYER_ANGLE
 
     def movement(self):
+        #print(self.game.pathfinding.get_path(self.map_pos, (self.game.static_sprite.x-0.5, self.game.static_sprite.y-0.5)))
+        #print(self.map_pos)
+        #print((self.game.static_sprite.x, self.game.static_sprite.y))
+
+        next_pos = self.game.pathfinding.get_path(self.map_pos, (self.game.static_sprite.x-0.5, self.game.static_sprite.y-0.5))
+        next_x, next_y = next_pos
+        self.angle = math.atan2(next_y + 0.5 - self.y, next_x + 0.5 - self.x)
+        speed = PLAYER_SPEED/2 * self.game.delta_time
+
+        pg.draw.rect(self.game.screen, 'blue', (900 + next_x * 20, next_y * 20, 20, 20))
+
+        dx = math.cos(self.angle) * speed
+        dy = math.sin(self.angle) * speed
+
+        self.check_wall_collision(dx, dy)
+
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         dx, dy = 0, 0
@@ -17,27 +33,23 @@ class Player:
         speed_cos = speed * cos_a
 
         keys = pg.key.get_pressed()
+
         if keys[pg.K_w]:
             dx += speed_cos
             dy += speed_sin
+            # print(self.x, self.y)
         if keys[pg.K_s]:
             dx += -speed_cos
             dy += -speed_sin
+            # print(self.x, self.y)
         if keys[pg.K_a]:
             dx += speed_sin
             dy += -speed_cos
+            # print(self.x, self.y)
         if keys[pg.K_d]:
             dx += -speed_sin
             dy += speed_cos
-
-        if keys[pg.K_t]:
-            dy -= 0.2
-        if keys[pg.K_g]:
-            dy += 0.2
-        if keys[pg.K_f]:
-            dx -= 0.2
-        if keys[pg.K_h]:
-            dx += 0.2
+            # print(self.x, self.y)
 
         self.check_wall_collision(dx, dy)
 
