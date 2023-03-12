@@ -3,6 +3,7 @@ import math
 from settings import *
 
 class RayCasting:
+    # Constructor de la clase
     def __init__(self, game):
         self.game = game
         self.ray_casting_result = []
@@ -31,6 +32,7 @@ class RayCasting:
 
             self.objects_to_render.append((depth, wall_column, wall_pos))
 
+    # Método para el RayCasting y hacer la proyección del 3D.
     def ray_cast(self):
         self.ray_casting_result = []
         ox, oy = self.game.player.pos
@@ -96,12 +98,9 @@ class RayCasting:
 
             self.ray_casting_result.append((depth, proj_height, texture, offset))
 
-            #color = [255 / (1 + depth ** 5 * 0.00002)] * 3
-            #pg.draw.rect(self.game.screen, color,
-            #             (ray * SCALE, HALF_HEIGHT - proj_height // 2, SCALE, proj_height))
-
             ray_angle += DELTA_ANGLE
 
+    # Actualizar la pantalla
     def update(self):
         self.ray_cast()
         self.get_objects_to_render()

@@ -2,6 +2,7 @@ import pygame as pg
 from settings import *
 
 class SpriteObject:
+    # Constructor.
     def __init__(self, game, path = "resources/sprites/contenedor_de_corazon.png", pos=(10.5, 3.5)):
         self.game = game
         self.player = game.player
@@ -13,6 +14,7 @@ class SpriteObject:
         self.dx, self.dy, self.theta, self.screen_x, self.dist, self.norm_dist = 0, 0, 0, 0, 1, 1
         self.sprite_half_width = 0
 
+    # Proyección del Sprite.
     def get_sprite_proyection(self):
         proj = SCREEN_DIST / self.norm_dist
         proj_width, proj_height = proj * self.IMAGE_RATIO, proj
@@ -24,7 +26,7 @@ class SpriteObject:
 
         self.game.raycasting.objects_to_render.append((self.norm_dist, image, pos))
 
-
+    # Método para obtener el sprite.
     def get_sprite(self):
         dx = self.x - self.player.x
         dy = self.y - self.player.y
@@ -43,9 +45,11 @@ class SpriteObject:
         if self.IMAGE_HALF_WIDTH < self.screen_x < (WIDTH + self.IMAGE_HALF_WIDTH) and self.norm_dist > 0.5:
             self.get_sprite_proyection()
 
+    # Método para dibujar en pantalla el objetivo a encontrar.
     def draw(self):
         pg.draw.circle(self.game.screen, 'red', (900 + self.x * 20, self.y * 20), 5)
 
+    # Actualizar el sprite del objeto.
     def update(self):
         self.get_sprite()
 
